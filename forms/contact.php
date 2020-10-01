@@ -9,7 +9,7 @@
   // Replace contact@example.com with your real receiving email address
   $receiving_email_address = 'sumandahal77@gmail.com';
 
-  if( file_exists($php_email_form = '../assets/vendor/php-email-form/php-email-form.php' )) {
+  if( file_exists($php_email_form = '../assets/vendor/php-email-form/php-email-forms.php' )) {
     include( $php_email_form );
   } else {
     die( 'Unable to load the "PHP Email Form" Library!');
@@ -26,8 +26,8 @@
   
   $contact->smtp = array(
     'host' => 'https:://www.gmail.com',
-    'username' => 'sumandahal77@gmail.com',
-    'password' => 'PRODSTUDIONEPAL2018',
+    'username' => '',
+    'password' => '',
     'port' => '587'
   );
   
