@@ -173,7 +173,9 @@ const DEALER =  blackJackGame['dealer']
 const hitSound = new Audio('static/sounds/swish.m4a');
 const standSound = new Audio ('static/sounds/aww.mp3');
 document.querySelector('#blackjack-hit-button').addEventListener('click',blackjackHit);
-document.querySelector('#blackjack-stand-button').addEventListener('click',blackjackStand);
+
+document.querySelector('#blackjack-stand-button').addEventListener('click',dealerLogic);
+
 document.querySelector('#blackjack-deal-button').addEventListener('click',blackjackDeal);
 
 function blackjackHit(){
@@ -192,7 +194,7 @@ function randomCard(){
 }
     
 function blackjackStand(){
-    showCard(DEALER);
+    //showCard(DEALER);
     
 }
 
@@ -206,6 +208,8 @@ function showCard(card,activePlayer){
     
 }
 function blackjackDeal(){
+    computeWinner();
+
     let yourImages = document.querySelector('#your-box').querySelectorAll('img');
     let dealerImages = document.querySelector('#dealer-box').querySelectorAll('img');
 
@@ -226,7 +230,7 @@ function blackjackDeal(){
 
 }
 
-function updateScore (card, activePlayer, black){
+function updateScore (card, activePlayer){
     // If adding 11 keps me below 21, add 11. otherwise add 1
     if(card === 'A'){
         if(activePlayer['score'] + blackJackGame['cardsMap'][card][1] <= 21){
@@ -247,3 +251,37 @@ function showScore(activePlayer){
         document.querySelector(activePlayer['scoreSpan']).textContent = activePlayer['score'];
     }
 }
+
+function dealerLogic(){
+    let card = randomCard();
+    showCard(card, DEALER);
+    updateScore(card, DEALER);
+    showScore(DEALER);
+
+}
+
+// compute winner and return who just won the game
+ function computeWinner(){
+     let winner;
+     if(YOU['score'] <= 21){
+         // Condition: higher score than dealer or when dealer busts but you are <= 21
+        if(YOU['score'] > DEALER['score'] || (DEALER['score'] > 21)){
+            console.log('You Won');
+            winner = YOU;
+        }else if (YOU['score'] < DEALER['score']){
+            console.log('You Lost!');
+            winner = DEALER;
+        }else if (YOU['score'] === DEALER['score']){
+            console.log('You Drew!');
+        }
+    // case: when you bust  but dealer doesnt
+     }else if(YOU['score'] > 21 && DEALER['score'] <= 21){
+         console.log('You Won!');
+         winner = DEALER;
+    // case: when you bust and dealer also bust
+     }else if(YOU['score'] > 21 && DEALER['score'] > 21){
+         console.log('You Drew!');
+     }
+     console.log('Winner is', winner);
+     return winner;
+ }
